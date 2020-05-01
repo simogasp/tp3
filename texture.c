@@ -41,33 +41,35 @@ void place_camera () {
 GLuint load_texture (char * ppm_file)
 {
 	GLuint texture;
-	im_color * image = NULL;
+	im_color * image;
 
 	//**********************************
 	// generate and bind the texture
 	//**********************************
-
-
+	glGenTextures (1, &texture);
+	glBindTexture (GL_TEXTURE_2D, texture);
 
 	//**********************************
 	// set the texture parameter for the repetition (clamp)
 	//**********************************
-
-
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 	//**********************************
 	// set the texture parameter for the interpolation (nearest pixel)
 	//**********************************
-
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
 	//**********************************
 	// load the texture from file, see load_ppm
 	//**********************************
-
+	image = load_ppm(ppm_file);
 
 	//**********************************
 	// load the texture in opengl from "image"
 	//**********************************
-
+	glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, image->xd, image->yd, 0,
+			GL_RGB, GL_UNSIGNED_BYTE, image->data);
 
 
 	return texture;
@@ -77,65 +79,63 @@ GLuint load_texture (char * ppm_file)
 void glRoom (GLdouble size)
 {
 	GLdouble v = size/2;
+
 	//**********************************
 	// load the brick texture using load_texture and store it in texture2
 	//**********************************
-
+	texture2 = load_texture("textures/brique.ppm");
 
 	//**********************************
 	// bind the texture2
 	//**********************************
-
+	glBindTexture (GL_TEXTURE_2D, texture2);
 
 	//**********************************
 	// enable opengl texturing
 	//**********************************
+	glEnable (GL_TEXTURE_2D);
 
+		glBegin (GL_QUADS);
+			glNormal3f ( 0,  0, 1);
+			glTexCoord2f (0.0, 0.0);glVertex3f (-v, -v, -v);
+			glTexCoord2f (1.0, 0.0);glVertex3f ( v, -v, -v);
+			glTexCoord2f (1.0, 1.0);glVertex3f ( v,  v, -v);
+			glTexCoord2f (0.0, 1.0);glVertex3f (-v,  v, -v);
 
-	glBegin (GL_QUADS);
-		glNormal3f ( 0,  0, 1);
-		//**********************************
-		// BEFORE EACH vertex set the texture coordinates
-		//**********************************
-		glVertex3f (-v, -v, -v);
-		glVertex3f ( v, -v, -v);
-		glVertex3f ( v,  v, -v);
-		glVertex3f (-v,  v, -v);
+			glNormal3f ( 0,  0, -1);
+			glTexCoord2f (0.0, 0.0);glVertex3f ( v, -v, v);
+			glTexCoord2f (1.0, 0.0);glVertex3f (-v, -v, v);
+			glTexCoord2f (1.0, 1.0);glVertex3f (-v,  v, v);
+			glTexCoord2f (0.0, 1.0);glVertex3f ( v,  v, v);
 
-		glNormal3f ( 0,  0, -1);
-		glVertex3f ( v, -v, v);
-		glVertex3f (-v, -v, v);
-		glVertex3f (-v,  v, v);
-		glVertex3f ( v,  v, v);
+			glNormal3f ( -1, 0,  0);
+			glTexCoord2f (0.0, 0.0);glVertex3f ( v, -v, -v);
+			glTexCoord2f (1.0, 0.0);glVertex3f ( v, -v,  v);
+			glTexCoord2f (1.0, 1.0);glVertex3f ( v,  v,  v);
+			glTexCoord2f (0.0, 1.0);glVertex3f ( v,  v, -v);
 
-		glNormal3f ( -1, 0,  0);
-		glVertex3f ( v, -v, -v);
-		glVertex3f ( v, -v,  v);
-		glVertex3f ( v,  v,  v);
-		glVertex3f ( v,  v, -v);
+			glNormal3f ( 1,  0,  0);
+			glTexCoord2f (0.0, 0.0);glVertex3f (-v, -v,  v);
+			glTexCoord2f (1.0, 0.0);glVertex3f (-v, -v, -v);
+			glTexCoord2f (1.0, 1.0);glVertex3f (-v,  v, -v);
+			glTexCoord2f (0.0, 1.0);glVertex3f (-v,  v,  v);
 
-		glNormal3f ( 1,  0,  0);
-		glVertex3f (-v, -v,  v);
-		glVertex3f (-v, -v, -v);
-		glVertex3f (-v,  v, -v);
-		glVertex3f (-v,  v,  v);
+			glNormal3f ( 0, -1,  0);
+			glTexCoord2f (0.0, 0.0);glVertex3f (-v,  v, -v);
+			glTexCoord2f (1.0, 0.0);glVertex3f ( v,  v, -v);
+			glTexCoord2f (1.0, 1.0);glVertex3f ( v,  v,  v);
+			glTexCoord2f (0.0, 1.0);glVertex3f (-v,  v,  v);
 
-		glNormal3f ( 0, -1,  0);
-		glVertex3f (-v,  v, -v);
-		glVertex3f ( v,  v, -v);
-		glVertex3f ( v,  v,  v);
-		glVertex3f (-v,  v,  v);
-
-		glNormal3f ( 0,  1,  0);
-		glVertex3f (-v, -v, -v);
-		glVertex3f (-v, -v,  v);
-		glVertex3f ( v, -v,  v);
-		glVertex3f ( v, -v, -v);
-	glEnd();
+			glNormal3f ( 0,  1,  0);
+			glTexCoord2f (0.0, 0.0);glVertex3f (-v, -v, -v);
+			glTexCoord2f (1.0, 0.0);glVertex3f (-v, -v,  v);
+			glTexCoord2f (1.0, 1.0);glVertex3f ( v, -v,  v);
+			glTexCoord2f (0.0, 1.0);glVertex3f ( v, -v, -v);
+		glEnd();
 	//**********************************
 	// disable opengl texturing
 	//**********************************
-
+	glDisable (GL_TEXTURE_2D);
 }
 
 
@@ -164,22 +164,22 @@ void init () {
 	//**********************************
 	// load the wood texture in texture
 	//**********************************
-
+	texture = load_texture("textures/bois.ppm");
 
 	//**********************************
 	// enable texture
 	//**********************************
-
+	glEnable (GL_TEXTURE_2D);
 
 	//**********************************
 	// enable cull face
 	//**********************************
-
+	glEnable (GL_CULL_FACE);
 
 	//**********************************
 	// enable depht test
 	//**********************************
-
+	glEnable (GL_DEPTH_TEST);
 }
 
 
@@ -201,25 +201,29 @@ void display ()
 	//**********************************
 	// bind the texture in texture (the wood texture)
 	//**********************************
-
+	glBindTexture (GL_TEXTURE_2D, texture);
 	//**********************************
 	// enable texturing
 	//**********************************
-
+	glEnable (GL_TEXTURE_2D);
 
 	//**********************************
 	// draw a simple square face of unitary size centered in (0,0,0)
 	//**********************************
-
+	glBegin (GL_QUADS);
 		//**********************************
 		// Before declaring each vertex give also the texture coordinates
 		//**********************************
-
+		glTexCoord2f (0.0, 0.0); glVertex3f(-0.5,-0.5,0);
+		glTexCoord2f (1.0, 0.0); glVertex3f( 0.5, -0.5,0);
+		glTexCoord2f (1.0, 1.0); glVertex3f( 0.5, 0.5,0);
+		glTexCoord2f (0.0, 1.0); glVertex3f(-0.5, 0.5,0);
+	glEnd();
 
 	//**********************************
 	// disable texturing
 	//**********************************
-
+	glDisable (GL_TEXTURE_2D);
 
 	glutSwapBuffers ();
 }
