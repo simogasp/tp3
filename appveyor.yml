@@ -8,17 +8,17 @@ platform:
 configuration:
   - Release
 
-install:
-    - vcpkg upgrade --no-dry-run
-    - vcpkg install
-          opengl freeglut
-          --triplet %PLATFORM%-windows
+#install:
+#    - vcpkg upgrade --no-dry-run
+#    - vcpkg install
+#          opengl
+#          --triplet %PLATFORM%-windows
 
 before_build:
     - md build
     - cd build
-    - cmake -G "Visual Studio 16 2019" -A x64 -T v140,host=x64 -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake ..
-#    - cmake -G "Visual Studio 16 2019" -A x64 -T v140,host=x64 -DCMAKE_BUILD_TYPE=%configuration%  ..
+#    - cmake -G "Visual Studio 16 2019" -A x64 -T v140,host=x64 -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake ..
+    - cmake -G "Visual Studio 16 2019" -A x64 -T v140,host=x64 -DCMAKE_BUILD_TYPE=%configuration%  ..
     - ls -l
 
 build:
@@ -27,4 +27,4 @@ build:
   parallel: true
 
 cache:
-  c:\tools\vcpkg\installed\
+#  - c:\tools\vcpkg\installed\
