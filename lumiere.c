@@ -121,23 +121,36 @@ void define_material (	GLfloat ar, GLfloat ag, GLfloat ab, // ambient
 	GLfloat mat_diffuse[4];
 	GLfloat mat_specular[4];
 
+	//**********************************
+	// set the ambient property
+	//**********************************
 	mat_ambient[0] = ar;
 	mat_ambient[1] = ag;
 	mat_ambient[2] = ab;
 	mat_ambient[3] = 1.0;
 	glMaterialfv (GL_FRONT, GL_AMBIENT, mat_ambient);
 
+	//**********************************
+	// set the diffuse property
+	//**********************************
 	mat_diffuse[0] = dr;
 	mat_diffuse[1] = dg;
 	mat_diffuse[2] = db;
 	mat_diffuse[3] = 1.0;
 	glMaterialfv (GL_FRONT, GL_DIFFUSE, mat_diffuse);
 
+	//**********************************
+	// set the specular property
+	//**********************************
 	mat_specular[0] = sr;
 	mat_specular[1] = sg;
 	mat_specular[2] = sb;
 	mat_specular[3] = 1.0;
 	glMaterialfv (GL_FRONT, GL_SPECULAR, mat_specular);
+
+	//**********************************
+	// set the shininess property
+	//**********************************
 	glMaterialf (GL_FRONT, GL_SHININESS, sh);
 }
 

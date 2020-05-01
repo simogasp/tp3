@@ -245,7 +245,8 @@ void reshape (int w, int h) {
 #define DELTA_DISTANCE	0.3
 #define DISTANCE_MIN	0.0
 void special (int key, int x, int y) {
-	switch (key) {
+	switch (key)
+	{
 		case GLUT_KEY_UP:
 			angle_x = (angle_x + DELTA_ANGLE_X) % 360;
 		break;
@@ -281,8 +282,6 @@ void keyboard (unsigned char key, int x, int y) {
         break;
 	}
 }
-
-
 
 int main (int argc, char **argv) {
 
