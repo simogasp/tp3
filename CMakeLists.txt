@@ -23,12 +23,4 @@ endif()
 add_executable(lumiere lumiere.c)
 target_include_directories(lumiere PUBLIC ${OPENGL_INCLUDE_DIR} ${GLUT_INCLUDE_DIR})
 target_link_libraries(lumiere PUBLIC ${OPENGL_opengl_LIBRARY} ${OPENGL_glu_LIBRARY} ${GLUT_LIBRARIES})
-#target_link_libraries(helloteapot OpenGL::OpenGL OpenGL::GLU GLUT::GLUT)
-
-add_executable(textureDemo textureDemo.c)
-target_include_directories(textureDemo PUBLIC ${OPENGL_INCLUDE_DIR} ${GLUT_INCLUDE_DIR})
-target_link_libraries(textureDemo PUBLIC ${OPENGL_opengl_LIBRARY} ${OPENGL_glu_LIBRARY} ${GLUT_LIBRARIES})
-
-add_executable(texture texture.c pnm_io.c)
-target_include_directories(texture PUBLIC ${OPENGL_INCLUDE_DIR} ${GLUT_INCLUDE_DIR})
-target_link_libraries(texture PUBLIC ${OPENGL_opengl_LIBRARY} ${OPENGL_glu_LIBRARY} ${GLUT_LIBRARIES})
+#target_link_libraries(lumiere OpenGL::OpenGL OpenGL::GLU GLUT::GLUT)
