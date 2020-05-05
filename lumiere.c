@@ -76,7 +76,6 @@ void glRoom (GLdouble size)
 	glEnd();
 }
 
-
 // place the camera, make the scene turn around the scene origin
 void place_camera ()
 {
@@ -92,39 +91,22 @@ void place_light (GLfloat x, GLfloat y, GLfloat z)
 	// set the light components: ambient (0.2 grey),
 	// diffuse and specular (both white)
 	//**********************************
-	GLfloat light_position[4];
-	GLfloat light_ambient[] = {0.2, 0.2, 0.2, 1.0};
-	GLfloat light_diffuse[] = {1.0, 1.0, 1.0, 1.0};
-	GLfloat light_specular[] = {1.0, 1.0, 1.0, 1.0};
+
 
 	//**********************************
 	// set the light position (directional or positional)
 	//**********************************
-	light_position[0] = x;
-	light_position[1] = y;
-	light_position[2] = z;
-	light_position[3] = (directional)? 0.0 : 1.0;
 
-	glLightfv (GL_LIGHT0, GL_AMBIENT, light_ambient);
-	glLightfv (GL_LIGHT0, GL_DIFFUSE, light_diffuse);
-	glLightfv (GL_LIGHT0, GL_SPECULAR, light_specular);
-	glLightfv (GL_LIGHT0, GL_POSITION, light_position);
 
 	//**********************************
 	// draw a yellow point to visually represent the light
 	//**********************************
-	glDisable (GL_LIGHTING);
-	glColor3f (1.0, 1.0, 0.0);
-	glPointSize (5);
-	glBegin (GL_POINTS);
-		glVertex3f (x, y, z);
-	glEnd();
+
 
 	//**********************************
 	// turn the light and the lighting on
 	//**********************************
-	glEnable (GL_LIGHT0);
-	glEnable (GL_LIGHTING);
+
 
 }
 
@@ -191,29 +173,25 @@ void init ()
 	//**********************************
 	// activate the Gouraud shading instead of the flat one
 	//**********************************
-	glShadeModel (GL_SMOOTH);
+	glShadeModel (GL_FLAT);
 
 	//**********************************
 	// enable face culling
 	//**********************************
-	glEnable (GL_CULL_FACE);
+
 	//**********************************
 	// enable the depth test
 	//**********************************
-	glEnable (GL_DEPTH_TEST);
+
 
 	//**********************************
 	// set the ambient light with glLightModelfv to a 50% grey
 	//**********************************
-	GLfloat ambient_light[] = {0.5, 0.5, 0.5, 1.0};
-	glLightModelfv (GL_LIGHT_MODEL_AMBIENT, ambient_light);
-
 
 
 	glEnable (GL_NORMALIZE);
 
 }
-
 
 
 void display ()
@@ -229,18 +207,11 @@ void display ()
 	//**********************************
 	// place the light in the scene using place_light
 	//**********************************
-	place_light (4, 4, -4);
-
 
 	//**********************************
 	// define the material for the room (instead of color)
 	//**********************************
-	define_material (
-		0.5, 0.5, 0.5,
-		0.8, 0.8, 0.8,
-		0.0, 0.0, 0.0,
-		0.0
-	);
+	glColor3f (1.0, 1.0, 1.0);
 	place_background();
 
 	// the 2 objects
@@ -251,13 +222,8 @@ void display ()
 		//**********************************
 		// define the material for the sphere (instead of color)
 		//**********************************
-		define_material (
-			0.2, 0.0, 0.0,
-			0.8, 0.0, 0.0,
-			1.0, 0.8, 0.8,
-			shininess
-		);
-		glutSolidSphere (1.0, 60, 30);
+		glColor3f (1.0, 0.0, 0.0);
+		glutSolidSphere (1.0, 24, 12);
 
 	glPopMatrix ();
 
@@ -268,12 +234,7 @@ void display ()
 		//**********************************
 		// define the material for the cube (instead of color)
 		//**********************************
-		define_material (
-			0.0, 0.7, 0.0,
-			0.4, 0.8, 0.4,
-			0.0, 0.0, 0.0,
-			0
-		);
+		glColor3f (0.0, 1.0, 0.0);
 		glutSolidCube (2.0);
 
 	glPopMatrix ();
@@ -329,7 +290,6 @@ void special (int key, int x, int y)
 }
 
 
-
 void keyboard (unsigned char key, int x, int y)
 {
 	switch (key) {
@@ -337,49 +297,28 @@ void keyboard (unsigned char key, int x, int y)
 		// directional light, use global variable directional
 		//**********************************
 		case 'd':
-			directional = !directional;
-			if (directional)
-				printf ("Lumi�re directionnelle\n");
-			else
-				printf ("Lumi�re ponctuelle\n");
+
 
 		break;
 
-		case 'v':	// directional light
-			infinite_view = !infinite_view;
-			if (infinite_view) {
-				glLightModeli (GL_LIGHT_MODEL_LOCAL_VIEWER, GL_FALSE);
-				printf ("Directional light\n");
-			} else {
-				glLightModeli (GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
-				printf ("Spatial light\n");
-			}
-
-		break;
 		//**********************************
 		// Shininess: 's' to decrement, 'S' to increment
 		//**********************************
 		case 'S':
-			if (shininess<500) shininess *= 2;
 
-			printf ("Shininess = %f\n", shininess);
 		break;
 
 		case 's':
-			shininess /= 2;
 
-			printf ("Shininess = %f\n", shininess);
 		break;
 
 		case 'q':
 		case 27: // [ESC]
 			exit(0);
 		break;
-
 		default:
         break;
 	}
-
 	glutPostRedisplay();
 }
 
