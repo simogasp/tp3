@@ -25,17 +25,17 @@
 
 
 int angle_x=45, angle_y=-45;
-float distance = 8;
-float shininess= 25.0;
+float distance = 8.f;
+float shininess= 25.f;
 
 int directional = 0;
 int infinite_view = 0;
 
 
 // the room: it's a cube with inverted normals, ie pointing inwards
-void glRoom (GLdouble size)
+void glRoom (GLfloat size)
 {
-	GLdouble v = size/2;
+	GLfloat v = size/2;
 
 	glBegin (GL_QUADS);
 		glNormal3f ( 0,  0, 1);
@@ -79,9 +79,9 @@ void glRoom (GLdouble size)
 // place the camera, make the scene turn around the scene origin
 void place_camera ()
 {
-	glTranslatef (0, 0, -distance);
-	glRotatef (angle_x, 1, 0, 0);
-	glRotatef (angle_y, 0, 1, 0);
+	glTranslatef (0.f, 0.f, -distance);
+	glRotatef (angle_x, 1.f, 0.f, 0.f);
+	glRotatef (angle_y, 0.f, 1.f, 0.f);
 }
 
 // place the light in x,y,z
@@ -127,7 +127,7 @@ void define_material (	GLfloat ar, GLfloat ag, GLfloat ab, // ambient
 	mat_ambient[0] = ar;
 	mat_ambient[1] = ag;
 	mat_ambient[2] = ab;
-	mat_ambient[3] = 1.0;
+	mat_ambient[3] = 1.f;
 	glMaterialfv (GL_FRONT, GL_AMBIENT, mat_ambient);
 
 	//**********************************
@@ -136,7 +136,7 @@ void define_material (	GLfloat ar, GLfloat ag, GLfloat ab, // ambient
 	mat_diffuse[0] = dr;
 	mat_diffuse[1] = dg;
 	mat_diffuse[2] = db;
-	mat_diffuse[3] = 1.0;
+	mat_diffuse[3] = 1.f;
 	glMaterialfv (GL_FRONT, GL_DIFFUSE, mat_diffuse);
 
 	//**********************************
@@ -145,7 +145,7 @@ void define_material (	GLfloat ar, GLfloat ag, GLfloat ab, // ambient
 	mat_specular[0] = sr;
 	mat_specular[1] = sg;
 	mat_specular[2] = sb;
-	mat_specular[3] = 1.0;
+	mat_specular[3] = 1.f;
 	glMaterialfv (GL_FRONT, GL_SPECULAR, mat_specular);
 
 	//**********************************
@@ -158,8 +158,8 @@ void define_material (	GLfloat ar, GLfloat ag, GLfloat ab, // ambient
 void place_background ()
 {
 	glPushMatrix();
-		glScalef (15, 15, 15);
-		glRoom (1.0);
+		glScalef (15.f, 15.f, 15.f);
+		glRoom (1.f);
 	glPopMatrix ();
 }
 
@@ -169,7 +169,7 @@ void place_background ()
  */
 void init ()
 {
-	glClearColor (0.0, 0.0, 0.0, 0.0);
+	glClearColor (0.f, 0.f, 0.f, 0.f);
 	//**********************************
 	// activate the Gouraud shading instead of the flat one
 	//**********************************
@@ -211,30 +211,30 @@ void display ()
 	//**********************************
 	// define the material for the room (instead of color)
 	//**********************************
-	glColor3f (1.0, 1.0, 1.0);
+	glColor3f (1.f, 1.f, 1.f);
 	place_background();
 
 	// the 2 objects
 	// red shining sphere
 	glPushMatrix ();
-		glTranslatef (-2, 0, 0);
+		glTranslatef (-2.f, 0.f, 0.f);
 
 		//**********************************
 		// define the material for the sphere (instead of color)
 		//**********************************
-		glColor3f (1.0, 0.0, 0.0);
+		glColor3f (1.f, 0.f, 0.f);
 		glutSolidSphere (1.0, 24, 12);
 
 	glPopMatrix ();
 
 	// green cube
 	glPushMatrix ();
-		glTranslatef (2, 0, 0);
+		glTranslatef (2.f, 0.f, 0.f);
 
 		//**********************************
 		// define the material for the cube (instead of color)
 		//**********************************
-		glColor3f (0.0, 1.0, 0.0);
+		glColor3f (0.f, 1.f, 0.f);
 		glutSolidCube (2.0);
 
 	glPopMatrix ();
@@ -261,7 +261,7 @@ void reshape (int w, int h)
  */
 #define DELTA_ANGLE_X	5
 #define DELTA_ANGLE_Y	5
-#define DELTA_DISTANCE	0.3
+#define DELTA_DISTANCE	0.3f
 #define DISTANCE_MIN	0.0
 void special (int key, int x, int y)
 {
@@ -282,7 +282,7 @@ void special (int key, int x, int y)
 			distance += DELTA_DISTANCE;
 		break;
 		case GLUT_KEY_PAGE_UP:
-			distance -= (distance>DISTANCE_MIN)? DELTA_DISTANCE: 0.0;
+			distance -= (distance>DISTANCE_MIN)? DELTA_DISTANCE: 0.f;
 		break;
 		default: break;
 	}
@@ -328,7 +328,7 @@ int main (int argc, char **argv)
 {
 
 	glutInit (&argc,argv);
-	// enable the bouble buffer and the depth buffer
+	// enable the double buffer and the depth buffer
 	glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 
 	// main window
