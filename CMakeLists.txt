@@ -21,9 +21,9 @@ if(APPLE)
 endif()
 
 add_executable(lumiere lumiere.c)
-target_include_directories(lumiere PUBLIC ${OPENGL_INCLUDE_DIR} ${GLUT_INCLUDE_DIR})
-target_link_libraries(lumiere PUBLIC ${OPENGL_opengl_LIBRARY} ${OPENGL_glu_LIBRARY} ${GLUT_LIBRARIES})
-#target_link_libraries(lumiere OpenGL::OpenGL OpenGL::GLU GLUT::GLUT)
+#target_include_directories(lumiere PUBLIC ${OPENGL_INCLUDE_DIR} ${GLUT_INCLUDE_DIR})
+#target_link_libraries(lumiere PUBLIC ${OPENGL_opengl_LIBRARY} ${OPENGL_glu_LIBRARY} ${GLUT_LIBRARIES})
+target_link_libraries(lumiere OpenGL::GL OpenGL::GLU GLUT::GLUT)
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
     target_compile_options(lumiere PRIVATE -Wall -Wextra -pedantic -Wno-comment)
