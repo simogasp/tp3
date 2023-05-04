@@ -262,7 +262,7 @@ void display ()
     //**********************************
     // define the material for the room (instead of color)
     //**********************************
-    //++ glColor3f (1.f, 1.f, 1.f);   //stud
+    //++ glColor3f (1.f, 1.f, 1.f);
 //<!!
     define_material (
         .5f, .5f, .5f,
@@ -281,7 +281,7 @@ void display ()
         //**********************************
         // define the material for the sphere (instead of color)
         //**********************************
-        //++ glColor3f (1.f, 0.f, 0.f);   // stud
+        //++ glColor3f (1.f, 0.f, 0.f);
 //<!!
         define_material (
             .2f, .0f, .0f,
