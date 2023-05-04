@@ -15,11 +15,13 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/freeglut.h>
+#include <cmath>
+
 #endif
 
 
-int angle_x=45;
-int angle_y=-45;
+float angle_x{45.f};
+float angle_y={45.f};
 float distance = 8.f;
 float shininess= 25.f;
 
@@ -330,35 +332,38 @@ void reshape (int w, int h)
 }
 
 
-/*
+/**
  * Callback for special keys
  */
-#define DELTA_ANGLE_X	5
-#define DELTA_ANGLE_Y	5
-#define DELTA_DISTANCE	0.3f
-#define DISTANCE_MIN	0.0
 void special (int key, int x, int y)
 {
+    static constexpr float DELTA_ANGLE_X{5.f};
+    static constexpr float DELTA_ANGLE_Y{5.f};
+    static constexpr float DELTA_DISTANCE{.3f};
+    static constexpr float DISTANCE_MIN{.0f};
+
     switch (key) {
         case GLUT_KEY_UP:
-            angle_x = (angle_x + DELTA_ANGLE_X) % 360;
+            angle_x = std::fmod(angle_x + DELTA_ANGLE_X, 360.f);
         break;
         case GLUT_KEY_DOWN:
-            angle_x = (angle_x - DELTA_ANGLE_X) % 360;
+            angle_x = std::fmod(angle_x - DELTA_ANGLE_X, 360.f);
         break;
         case GLUT_KEY_LEFT:
-            angle_y = (angle_y + DELTA_ANGLE_Y) % 360;
+            angle_y = std::fmod(angle_y + DELTA_ANGLE_Y, 360.f);
         break;
         case GLUT_KEY_RIGHT:
-            angle_y = (angle_y - DELTA_ANGLE_Y) % 360;
+            angle_y = std::fmod(angle_y - DELTA_ANGLE_Y, 360.f);
         break;
         case GLUT_KEY_PAGE_DOWN:
             distance += DELTA_DISTANCE;
         break;
         case GLUT_KEY_PAGE_UP:
-            distance -= (distance>DISTANCE_MIN)? DELTA_DISTANCE: 0.f;
+            distance -= (distance > DISTANCE_MIN)? DELTA_DISTANCE: .0f;
         break;
-        default: break;
+
+        default:
+            break;
     }
     glutPostRedisplay();
 }
