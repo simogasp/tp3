@@ -139,7 +139,6 @@ void place_light (GLfloat x, GLfloat y, GLfloat z)
     glEnable (GL_LIGHT0);
     glEnable (GL_LIGHTING);
 //>!!
-
 }
 
 /**
@@ -240,7 +239,6 @@ void init ()
 
 
     glEnable (GL_NORMALIZE);
-
 }
 
 
@@ -416,7 +414,6 @@ void keyboard (unsigned char key, int, int)
 
 int main (int argc, char **argv)
 {
-
     glutInit (&argc,argv);
     // enable the double buffer and the depth buffer
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
