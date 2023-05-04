@@ -1,11 +1,6 @@
-/*
- * lumiere.c
- *
- *	OpenGL light
- */
-
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cmath>
 
 // for mac osx
 #ifdef __APPLE__
@@ -21,18 +16,25 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/freeglut.h>
+
+
 #endif
 
 
-int angle_x=45, angle_y=-45;
-float distance = 8.f;
-float shininess= 25.f;
+float angle_x{45.f};
+float angle_y{45.f};
+float distance{8.f};
+float shininess{25.f};
 
-int directional = 0;
-int infinite_view = 0;
+bool directional{false};
 
 
-// the room: it's a cube with inverted normals, ie pointing inwards
+
+/**
+ * @brief Draw a room of size size centered on the origin
+ * it's a cube with inverted normals, ie pointing inwards
+ * @param size
+ */
 void glRoom (GLfloat size)
 {
     GLfloat v = size/2;
@@ -76,7 +78,10 @@ void glRoom (GLfloat size)
     glEnd();
 }
 
-// place the camera, make the scene turn around the scene origin
+
+/**
+ * @brief Place the camera in the scene
+ */
 void place_camera ()
 {
     glTranslatef (0.f, 0.f, -distance);
@@ -84,33 +89,71 @@ void place_camera ()
     glRotatef (angle_y, 0.f, 1.f, 0.f);
 }
 
-// place the light in x,y,z
+/**
+ * @brief Place a light in the scene
+ * @param[in] x x coordinate of the light
+ * @param[in] y y coordinate of the light
+ * @param[in] z z coordinate of the light
+ */
 void place_light (GLfloat x, GLfloat y, GLfloat z)
 {
     //**********************************
     // set the light components: ambient (0.2 grey),
     // diffuse and specular (both white)
     //**********************************
-
-
+//<!!
+    GLfloat light_position[4];
+    GLfloat light_ambient[] = {.2f, .2f, .2f, 1.f};
+    GLfloat light_diffuse[] = {1.f, 1.f, 1.f, 1.f};
+    GLfloat light_specular[] = {1.f, 1.f, 1.f, 1.f};
+//>!!
     //**********************************
     // set the light position (directional or positional)
     //**********************************
+//<!!
+    light_position[0] = x;
+    light_position[1] = y;
+    light_position[2] = z;
+    light_position[3] = (directional)? .0f : 1.f;
 
-
+    glLightfv (GL_LIGHT0, GL_AMBIENT, light_ambient);
+    glLightfv (GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+    glLightfv (GL_LIGHT0, GL_SPECULAR, light_specular);
+    glLightfv (GL_LIGHT0, GL_POSITION, light_position);
+//>!!
     //**********************************
     // draw a yellow point to visually represent the light
     //**********************************
-
-
+//<!!
+    glDisable (GL_LIGHTING);
+    glColor3f (1.f, 1.f, .0f);
+    glPointSize (5);
+    glBegin (GL_POINTS);
+        glVertex3f (x, y, z);
+    glEnd();
+//>!!
     //**********************************
     // turn the light and the lighting on
     //**********************************
-
-
+//<!!
+    glEnable (GL_LIGHT0);
+    glEnable (GL_LIGHTING);
+//>!!
 }
 
-// define a material in terms of its components
+/**
+ * @brief Define a material
+ * @param ar  ambient red component
+ * @param ag  ambient green component
+ * @param ab  ambient blue component
+ * @param dr  diffuse red component
+ * @param dg  diffuse green component
+ * @param db  diffuse blue component
+ * @param sr  specular red component
+ * @param sg  specular green component
+ * @param sb  specular blue component
+ * @param sh  shininess
+ */
 void define_material (	GLfloat ar, GLfloat ag, GLfloat ab, // ambient
                         GLfloat dr, GLfloat dg, GLfloat db, // diffuse
                         GLfloat sr, GLfloat sg, GLfloat sb, // specular
@@ -154,7 +197,9 @@ void define_material (	GLfloat ar, GLfloat ag, GLfloat ab, // ambient
     glMaterialf (GL_FRONT, GL_SHININESS, sh);
 }
 
-// draw the room
+/**
+ * @brief Place the room in the scene
+ */
 void place_background ()
 {
     glPushMatrix();
@@ -164,7 +209,7 @@ void place_background ()
 }
 
 
-/*
+/**
  * OpenGL Initialization
  */
 void init ()
@@ -173,24 +218,27 @@ void init ()
     //**********************************
     // activate the Gouraud shading instead of the flat one
     //**********************************
-    glShadeModel (GL_FLAT);
+    glShadeModel (GL_SMOOTH); //++ glShadeModel (GL_FLAT);
 
     //**********************************
     // enable face culling
     //**********************************
+    glEnable (GL_CULL_FACE);  //!!
 
     //**********************************
     // enable the depth test
     //**********************************
+    glEnable (GL_DEPTH_TEST);  //!!
 
 
     //**********************************
     // set the ambient light with glLightModelfv to a 50% grey
     //**********************************
+    GLfloat ambient_light[] = {.5f, .5f, .5f, 1.f};          //!!
+    glLightModelfv (GL_LIGHT_MODEL_AMBIENT, ambient_light);  //!!
 
 
     glEnable (GL_NORMALIZE);
-
 }
 
 
@@ -207,11 +255,20 @@ void display ()
     //**********************************
     // place the light in the scene using place_light
     //**********************************
+    place_light (4, 4, -4);  //!!
 
     //**********************************
     // define the material for the room (instead of color)
     //**********************************
-    glColor3f (1.f, 1.f, 1.f);
+    //++ glColor3f (1.f, 1.f, 1.f);
+//<!!
+    define_material (
+        .5f, .5f, .5f,
+        .8f, .8f, .8f,
+        .0f, .0f, .0f,
+        .0f
+    );
+//>!!
     place_background();
 
     // the 2 objects
@@ -222,7 +279,15 @@ void display ()
         //**********************************
         // define the material for the sphere (instead of color)
         //**********************************
-        glColor3f (1.f, 0.f, 0.f);
+        //++ glColor3f (1.f, 0.f, 0.f);
+//<!!
+        define_material (
+            .2f, .0f, .0f,
+            .8f, .0f, .0f,
+            1.f, .8f, .8f,
+            shininess
+        );
+//>!!
         glutSolidSphere (1.0, 24, 12);
 
     glPopMatrix ();
@@ -234,7 +299,15 @@ void display ()
         //**********************************
         // define the material for the cube (instead of color)
         //**********************************
-        glColor3f (0.f, 1.f, 0.f);
+        //++ glColor3f (0.f, 1.f, 0.f);
+//<!!
+        define_material (
+            .0f, .7f, .0f,
+            .4f, .8f, .4f,
+            .0f, .0f, .0f,
+            .0f
+        );
+//>!!
         glutSolidCube (2.0);
 
     glPopMatrix ();
@@ -242,7 +315,7 @@ void display ()
     glutSwapBuffers ();
 }
 
-/*
+/**
  *	@brief Callback for window size change
  *	@param[in] w new width of the window
  *	@param[in] h new height of the window
@@ -256,60 +329,75 @@ void reshape (int w, int h)
 }
 
 
-/*
+/**
  * Callback for special keys
  */
-#define DELTA_ANGLE_X	5
-#define DELTA_ANGLE_Y	5
-#define DELTA_DISTANCE	0.3f
-#define DISTANCE_MIN	0.0
-void special (int key, int x, int y)
+void special (int key, int, int)
 {
+    static constexpr float DELTA_ANGLE_X{5.f};
+    static constexpr float DELTA_ANGLE_Y{5.f};
+    static constexpr float DELTA_DISTANCE{.3f};
+    static constexpr float DISTANCE_MIN{.0f};
+
     switch (key) {
         case GLUT_KEY_UP:
-            angle_x = (angle_x + DELTA_ANGLE_X) % 360;
+            angle_x = std::fmod(angle_x + DELTA_ANGLE_X, 360.f);
         break;
         case GLUT_KEY_DOWN:
-            angle_x = (angle_x - DELTA_ANGLE_X) % 360;
+            angle_x = std::fmod(angle_x - DELTA_ANGLE_X, 360.f);
         break;
         case GLUT_KEY_LEFT:
-            angle_y = (angle_y + DELTA_ANGLE_Y) % 360;
+            angle_y = std::fmod(angle_y + DELTA_ANGLE_Y, 360.f);
         break;
         case GLUT_KEY_RIGHT:
-            angle_y = (angle_y - DELTA_ANGLE_Y) % 360;
+            angle_y = std::fmod(angle_y - DELTA_ANGLE_Y, 360.f);
         break;
         case GLUT_KEY_PAGE_DOWN:
             distance += DELTA_DISTANCE;
         break;
         case GLUT_KEY_PAGE_UP:
-            distance -= (distance>DISTANCE_MIN)? DELTA_DISTANCE: 0.f;
+            distance -= (distance > DISTANCE_MIN)? DELTA_DISTANCE: .0f;
         break;
-        default: break;
+
+        default:
+            break;
     }
     glutPostRedisplay();
 }
 
 
-void keyboard (unsigned char key, int x, int y)
+void keyboard (unsigned char key, int, int)
 {
     switch (key) {
         //**********************************
         // directional light, use global variable directional
         //**********************************
         case 'd':
-
-
+//<!!
+            directional = !directional;
+            if (directional)
+                printf ("Directional light\n");
+            else
+                printf ("Positional light\n");
+//>!!
         break;
 
         //**********************************
         // Shininess: 's' to decrement, 'S' to increment
         //**********************************
         case 'S':
-
+//<!!
+            if (shininess < 500)
+                shininess *= 2;
+            printf("Shininess = %f\n", shininess);
+//>!!
         break;
 
         case 's':
-
+//<!!
+            shininess /= 2;
+            printf ("Shininess = %f\n", shininess);
+//>!!
         break;
 
         case 'q':
@@ -326,7 +414,6 @@ void keyboard (unsigned char key, int x, int y)
 
 int main (int argc, char **argv)
 {
-
     glutInit (&argc,argv);
     // enable the double buffer and the depth buffer
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);

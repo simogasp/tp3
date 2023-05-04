@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
-project(tp3 VERSION 2021.0.0 LANGUAGES C CXX)
+project(tp3 VERSION 2023.1.0 LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 set(OpenGL_GL_PREFERENCE "GLVND")
 find_package(OpenGL REQUIRED)
@@ -16,18 +16,24 @@ message(STATUS "GLUT_FOUND: ${GLUT_FOUND}")
 message(STATUS "GLUT_INCLUDE_DIR: ${GLUT_INCLUDE_DIR}")
 message(STATUS "GLUT_LIBRARIES: ${GLUT_LIBRARIES}")
 
-if(APPLE)
-  add_definitions(-Wno-deprecated-declarations)
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
+    set(MY_COMPILE_OPTIONS "-Wall;-Wextra;-pedantic;-Wno-comment;-Wshadow;-Wnon-virtual-dtor;-Wpedantic;-Wconversion;-Wmisleading-indentation;-Wsign-conversion")
+elseif(MSVC)
+    set(MY_COMPILE_OPTIONS "/W4;/permissive-")
 endif()
 
-add_executable(lumiere lumiere.c)
+if(APPLE)
+    list(APPEND MY_COMPILE_OPTIONS "-Wno-deprecated-declarations")
+endif()
+
+add_executable(lumiere lumiere.cpp)
 #target_include_directories(lumiere PUBLIC ${OPENGL_INCLUDE_DIR} ${GLUT_INCLUDE_DIR})
 #target_link_libraries(lumiere PUBLIC ${OPENGL_opengl_LIBRARY} ${OPENGL_glu_LIBRARY} ${GLUT_LIBRARIES})
 target_link_libraries(lumiere OpenGL::GL OpenGL::GLU GLUT::GLUT)
 
-if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
-    target_compile_options(lumiere PRIVATE -Wall -Wextra -pedantic -Wno-comment)
-endif()
+
+target_compile_options(lumiere PRIVATE ${MY_COMPILE_OPTIONS})
+
 if(MSVC)
     target_compile_definitions(lumiere PUBLIC -DNOMINMAX)
 endif()
