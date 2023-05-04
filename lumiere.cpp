@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <cstdio>
+#include <cmath>
 
 // for mac osx
 #ifdef __APPLE__
@@ -15,18 +16,17 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/freeglut.h>
-#include <cmath>
+
 
 #endif
 
 
 float angle_x{45.f};
-float angle_y={45.f};
-float distance = 8.f;
-float shininess= 25.f;
+float angle_y{45.f};
+float distance{8.f};
+float shininess{25.f};
 
-int directional = 0;
-int infinite_view = 0;
+bool directional{false};
 
 
 
@@ -239,7 +239,6 @@ void init ()
     glLightModelfv (GL_LIGHT_MODEL_AMBIENT, ambient_light);  //!!
 
 
-
     glEnable (GL_NORMALIZE);
 
 }
@@ -318,7 +317,7 @@ void display ()
     glutSwapBuffers ();
 }
 
-/*
+/**
  *	@brief Callback for window size change
  *	@param[in] w new width of the window
  *	@param[in] h new height of the window
@@ -335,7 +334,7 @@ void reshape (int w, int h)
 /**
  * Callback for special keys
  */
-void special (int key, int x, int y)
+void special (int key, int, int)
 {
     static constexpr float DELTA_ANGLE_X{5.f};
     static constexpr float DELTA_ANGLE_Y{5.f};
@@ -369,7 +368,7 @@ void special (int key, int x, int y)
 }
 
 
-void keyboard (unsigned char key, int x, int y)
+void keyboard (unsigned char key, int, int)
 {
     switch (key) {
         //**********************************
