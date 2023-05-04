@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(tp3 VERSION 2023.1.0 LANGUAGES C CXX)
+project(tp3 VERSION 2023.1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -26,7 +26,7 @@ if(APPLE)
     list(APPEND MY_COMPILE_OPTIONS "-Wno-deprecated-declarations")
 endif()
 
-add_executable(lumiere lumiere.c)
+add_executable(lumiere lumiere.cpp)
 #target_include_directories(lumiere PUBLIC ${OPENGL_INCLUDE_DIR} ${GLUT_INCLUDE_DIR})
 #target_link_libraries(lumiere PUBLIC ${OPENGL_opengl_LIBRARY} ${OPENGL_glu_LIBRARY} ${GLUT_LIBRARIES})
 target_link_libraries(lumiere OpenGL::GL OpenGL::GLU GLUT::GLUT)
