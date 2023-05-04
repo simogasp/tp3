@@ -1,9 +1,3 @@
-/*
- * lumiere.c
- *
- *	OpenGL light
- */
-
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -91,22 +85,44 @@ void place_light (GLfloat x, GLfloat y, GLfloat z)
     // set the light components: ambient (0.2 grey),
     // diffuse and specular (both white)
     //**********************************
-
-
+//<!!
+    GLfloat light_position[4];
+    GLfloat light_ambient[] = {.2f, .2f, .2f, 1.f};
+    GLfloat light_diffuse[] = {1.f, 1.f, 1.f, 1.f};
+    GLfloat light_specular[] = {1.f, 1.f, 1.f, 1.f};
+//>!!
     //**********************************
     // set the light position (directional or positional)
     //**********************************
+//<!!
+    light_position[0] = x;
+    light_position[1] = y;
+    light_position[2] = z;
+    light_position[3] = (directional)? .0f : 1.f;
 
-
+    glLightfv (GL_LIGHT0, GL_AMBIENT, light_ambient);
+    glLightfv (GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+    glLightfv (GL_LIGHT0, GL_SPECULAR, light_specular);
+    glLightfv (GL_LIGHT0, GL_POSITION, light_position);
+//>!!
     //**********************************
     // draw a yellow point to visually represent the light
     //**********************************
-
-
+//<!!
+    glDisable (GL_LIGHTING);
+    glColor3f (1.f, 1.f, .0f);
+    glPointSize (5);
+    glBegin (GL_POINTS);
+        glVertex3f (x, y, z);
+    glEnd();
+//>!!
     //**********************************
     // turn the light and the lighting on
     //**********************************
-
+//<!!
+    glEnable (GL_LIGHT0);
+    glEnable (GL_LIGHTING);
+//>!!
 
 }
 
@@ -173,20 +189,25 @@ void init ()
     //**********************************
     // activate the Gouraud shading instead of the flat one
     //**********************************
-    glShadeModel (GL_FLAT);
+    glShadeModel (GL_SMOOTH); //++ glShadeModel (GL_FLAT);
 
     //**********************************
     // enable face culling
     //**********************************
+    glEnable (GL_CULL_FACE);  //!!
 
     //**********************************
     // enable the depth test
     //**********************************
+    glEnable (GL_DEPTH_TEST);  //!!
 
 
     //**********************************
     // set the ambient light with glLightModelfv to a 50% grey
     //**********************************
+    GLfloat ambient_light[] = {.5f, .5f, .5f, 1.f};          //!!
+    glLightModelfv (GL_LIGHT_MODEL_AMBIENT, ambient_light);  //!!
+
 
 
     glEnable (GL_NORMALIZE);
@@ -207,11 +228,20 @@ void display ()
     //**********************************
     // place the light in the scene using place_light
     //**********************************
+    place_light (4, 4, -4);  //!!
 
     //**********************************
     // define the material for the room (instead of color)
     //**********************************
-    glColor3f (1.f, 1.f, 1.f);
+    //++ glColor3f (1.f, 1.f, 1.f);   //stud
+//<!!
+    define_material (
+        .5f, .5f, .5f,
+        .8f, .8f, .8f,
+        .0f, .0f, .0f,
+        .0f
+    );
+//>!!
     place_background();
 
     // the 2 objects
@@ -222,7 +252,15 @@ void display ()
         //**********************************
         // define the material for the sphere (instead of color)
         //**********************************
-        glColor3f (1.f, 0.f, 0.f);
+        //++ glColor3f (1.f, 0.f, 0.f);   // stud
+//<!!
+        define_material (
+            .2f, .0f, .0f,
+            .8f, .0f, .0f,
+            1.f, .8f, .8f,
+            shininess
+        );
+//>!!
         glutSolidSphere (1.0, 24, 12);
 
     glPopMatrix ();
@@ -234,7 +272,15 @@ void display ()
         //**********************************
         // define the material for the cube (instead of color)
         //**********************************
-        glColor3f (0.f, 1.f, 0.f);
+        //++ glColor3f (0.f, 1.f, 0.f);
+//<!!
+        define_material (
+            .0f, .7f, .0f,
+            .4f, .8f, .4f,
+            .0f, .0f, .0f,
+            .0f
+        );
+//>!!
         glutSolidCube (2.0);
 
     glPopMatrix ();
@@ -297,19 +343,31 @@ void keyboard (unsigned char key, int x, int y)
         // directional light, use global variable directional
         //**********************************
         case 'd':
-
-
+//<!!
+            directional = !directional;
+            if (directional)
+                printf ("Directional light\n");
+            else
+                printf ("Positional light\n");
+//>!!
         break;
 
         //**********************************
         // Shininess: 's' to decrement, 'S' to increment
         //**********************************
         case 'S':
-
+//<!!
+            if (shininess < 500)
+                shininess *= 2;
+            printf("Shininess = %f\n", shininess);
+//>!!
         break;
 
         case 's':
-
+//<!!
+            shininess /= 2;
+            printf ("Shininess = %f\n", shininess);
+//>!!
         break;
 
         case 'q':
