@@ -18,7 +18,8 @@
 #endif
 
 
-int angle_x=45, angle_y=-45;
+int angle_x=45;
+int angle_y=-45;
 float distance = 8.f;
 float shininess= 25.f;
 
@@ -26,7 +27,12 @@ int directional = 0;
 int infinite_view = 0;
 
 
-// the room: it's a cube with inverted normals, ie pointing inwards
+
+/**
+ * @brief Draw a room of size size centered on the origin
+ * it's a cube with inverted normals, ie pointing inwards
+ * @param size
+ */
 void glRoom (GLfloat size)
 {
     GLfloat v = size/2;
@@ -70,7 +76,10 @@ void glRoom (GLfloat size)
     glEnd();
 }
 
-// place the camera, make the scene turn around the scene origin
+
+/**
+ * @brief Place the camera in the scene
+ */
 void place_camera ()
 {
     glTranslatef (0.f, 0.f, -distance);
@@ -78,7 +87,12 @@ void place_camera ()
     glRotatef (angle_y, 0.f, 1.f, 0.f);
 }
 
-// place the light in x,y,z
+/**
+ * @brief Place a light in the scene
+ * @param[in] x x coordinate of the light
+ * @param[in] y y coordinate of the light
+ * @param[in] z z coordinate of the light
+ */
 void place_light (GLfloat x, GLfloat y, GLfloat z)
 {
     //**********************************
@@ -126,7 +140,19 @@ void place_light (GLfloat x, GLfloat y, GLfloat z)
 
 }
 
-// define a material in terms of its components
+/**
+ * @brief Define a material
+ * @param ar  ambient red component
+ * @param ag  ambient green component
+ * @param ab  ambient blue component
+ * @param dr  diffuse red component
+ * @param dg  diffuse green component
+ * @param db  diffuse blue component
+ * @param sr  specular red component
+ * @param sg  specular green component
+ * @param sb  specular blue component
+ * @param sh  shininess
+ */
 void define_material (	GLfloat ar, GLfloat ag, GLfloat ab, // ambient
                         GLfloat dr, GLfloat dg, GLfloat db, // diffuse
                         GLfloat sr, GLfloat sg, GLfloat sb, // specular
@@ -170,7 +196,9 @@ void define_material (	GLfloat ar, GLfloat ag, GLfloat ab, // ambient
     glMaterialf (GL_FRONT, GL_SHININESS, sh);
 }
 
-// draw the room
+/**
+ * @brief Place the room in the scene
+ */
 void place_background ()
 {
     glPushMatrix();
@@ -180,7 +208,7 @@ void place_background ()
 }
 
 
-/*
+/**
  * OpenGL Initialization
  */
 void init ()
