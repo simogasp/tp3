@@ -21,8 +21,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - all warnings on linux and windows
 
 ### Removed
-- support for makefile building
 - appveyor ci support
+
+## [2021.0.0] - 2021-05-05
+
+### Changed
+- everything to float
+- [cmake] using targets for glut
 
 ## [2020.1.0] - 2020-05-05
 
