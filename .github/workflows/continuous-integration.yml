@@ -94,7 +94,7 @@ jobs:
         cmakeBuildType: ${{ matrix.config }}
         useVcpkgToolchainFile: true
         buildWithCMake: true
-        buildWithCMakeArgs: -j1
+        buildWithCMakeArgs: -j1 --config ${{ matrix.config }}
 
 # glm on homebrew is broken when loading the cmake
   build_macos:
