@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(tp3 VERSION 2023.1.0 LANGUAGES CXX)
 
+option(BUILD_TEAPOT "Build teapot sample" OFF)
+
 set(CMAKE_CXX_STANDARD 17)
 
 include(CheckIPOSupported)
@@ -41,4 +43,17 @@ target_compile_options(lumiere PRIVATE ${MY_COMPILE_OPTIONS})
 
 if(MSVC)
     target_compile_definitions(lumiere PUBLIC -DNOMINMAX)
+endif()
+
+if(BUILD_TEAPOT)
+    add_executable(teapot teapotLight.cpp)
+    #target_include_directories(teapot PUBLIC ${OPENGL_INCLUDE_DIR} ${GLUT_INCLUDE_DIR})
+    #target_link_libraries(teapot PUBLIC ${OPENGL_opengl_LIBRARY} ${OPENGL_glu_LIBRARY} ${GLUT_LIBRARIES})
+    target_link_libraries(teapot OpenGL::GL OpenGL::GLU GLUT::GLUT)
+
+    target_compile_options(teapot PRIVATE ${MY_COMPILE_OPTIONS})
+
+    if(MSVC)
+        target_compile_definitions(teapot PUBLIC -DNOMINMAX)
+    endif()
 endif()
