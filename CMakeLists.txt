@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(tp3 VERSION 2023.1.0 LANGUAGES CXX)
 
 option(BUILD_TEAPOT "Build teapot sample" OFF)
+option(ENABLE_WARNINGS_AS_ERRORS "Treat warnings as errors" OFF)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -25,8 +26,14 @@ message(STATUS "GLUT_LIBRARIES: ${GLUT_LIBRARIES}")
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
     set(MY_COMPILE_OPTIONS "-Wall;-Wextra;-pedantic;-Wno-comment;-Wshadow;-Wnon-virtual-dtor;-Wpedantic;-Wconversion;-Wmisleading-indentation;-Wsign-conversion")
+    if(ENABLE_WARNINGS_AS_ERRORS)
+        list(APPEND MY_COMPILE_OPTIONS "-Werror")
+    endif()
 elseif(MSVC)
     set(MY_COMPILE_OPTIONS "/W4;/permissive-")
+    if(ENABLE_WARNINGS_AS_ERRORS)
+        list(APPEND MY_COMPILE_OPTIONS "/WX")
+    endif()
 endif()
 
 if(APPLE)
