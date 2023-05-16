@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CI on GitHub for linux, windows and osx
 - clang format file
 - added IPO support 
+- teapot sample (not give to the students)
 
 ### Changed
 - modernize and refactoring cmake
