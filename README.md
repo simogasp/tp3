@@ -67,7 +67,7 @@ This step enables you to create the project file to load inside VS:
 
   - Select the project you want to run (e.g. `lumiere`), right click on it and select **Set as Startup Project** 
   
-  - On the menu bar, choose **Debug** --> **Start without debugging**.)
+  - On the menu bar, choose **Debug** --> **Start without debugging**.
 
 (see <https://docs.microsoft.com/en-us/cpp/build/vscpp-step-2-build?view=vs-2019> for how to build, execute, etc)
 
