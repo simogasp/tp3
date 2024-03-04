@@ -6,13 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- [ci] update to vcpkg 2023.11.20
+- [doc] update README.md with warnings and notes
+
+## [2023.1.0] - 2023-05-16
+
 ### Added
 - warning flags for gcc, clang and msvc
 - use of studentipy tags in the code
 - script to make release with studentipy
 - CI on GitHub for linux, windows and osx
 - clang format file
-- added IPO support 
+- added IPO support
 - teapot sample (not give to the students)
 - cmake option to build the code with warnings as errors
 
