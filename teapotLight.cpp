@@ -20,7 +20,7 @@
 
 bool wired = true;
 
-// function called everytime the windows is refreshed
+// function called every time the windows is refreshed
 void display() {
 
     // clear window
@@ -44,7 +44,7 @@ void display() {
 
 }
 
-// Function called everytime a key is pressed
+// Function called every time a key is pressed
 void key(unsigned char key, int, int) 
 {
     switch (key) 
@@ -80,7 +80,7 @@ void reshape(int width, int height) {
 // Main routine
 int main(int argc, char *argv[]) {
 
-    // initialize GLUT, using any commandline parameters passed to the
+    // initialize GLUT, using any command line parameters passed to the
     //   program
     glutInit(&argc, argv);
 
